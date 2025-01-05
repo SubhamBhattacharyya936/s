@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickKart</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" 
+          integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" 
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" 
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <style>
+        /* Reset default padding and margin */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #6c757d;
+        }
+
+        /* Fixed Top Navbar */
+        .navbar1 {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #1d1c21;
+            color: white;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1000;
+        }
+
+        .navbar1 .logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        .navbar1 .title h1 {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Fixed Bottom Navbar */
+        .navbar3 {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #1d1c21;
+            color: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 1000;
+        }
+
+        .navbar3 .nav-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .navbar3 .nav-item a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .content {
+            padding: 20px;
+            margin-bottom: 60px;
+        }
+
+        .content img {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+        }
+
+        .category-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .food-item {
+            margin: 10px;
+        }
+
+        .mdl-card {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Fixed Top Navbar -->
+    <div class="navbar1">
+        <div class="logo">
+            <img src="images/logo.png" alt="logo Photo" class="logo">
+        </div>
+        <div class="title"><strong><h1>QuickKart</h1></strong></div>
+        <div class="login"></div>
+    </div>
+
+    <!-- Authentication Screen -->
+    <div id="auth-screen" style="display: block;">
+        <form id="auth-form" class="container">
+            <h2>Login / Register</h2>
+            <input type="text" id="name" placeholder="Name" required><br>
+            <input type="email" id="email" placeholder="Email" required><br>
+            <input type="tel" id="phone" placeholder="Phone Number" required><br>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <!-- Main App Screen -->
+    <div id="main-app" style="display: none;">
+        <!-- Home Section -->
+        <div id="home-section" class="main-section">
+            <h2>Food Categories</h2>
+            <div class="food-categories"></div>
+        </div>
+
+        <!-- Search Section -->
+        <div id="search-section" class="main-section">
+            <input type="text" id="search-input" placeholder="Search for food...">
+            <div class="search-results"></div>
+        </div>
+
+        <!-- Orders Section -->
+        <div id="orders-section" class="main-section">
+            <h4>Your Orders</h4>
+            <div class="orders-list"></div>
+        </div>
+
+        <!-- Profile Section -->
+        <div id="profile-section" class="main-section">
+            <div class="profile-container"></div>
+        </div>
+    </div>
+
+    <!-- Fixed Bottom Navbar -->
+    <div class="navbar3">
+        <div class="nav-item"><a href="#" onclick="showSection('home')"><i class="fas fa-home"></i> Home</a></div>
+        <div class="nav-item"><a href="#" onclick="showSection('search')"><i class="fas fa-search"></i> Search</a></div>
+        <div class="nav-item"><a href="#" onclick="showSection('orders')"><i class="fas fa-box"></i> Orders</a></div>
+        <div class="nav-item"><a href="#" onclick="showSection('profile')"><i class="fas fa-user"></i> Profile</a></div>
+    </div>
+
+    <!-- Order Dialog Modal -->
+    <dialog id="order-dialog">
+        <h2>Place Order</h2>
+        <label for="order-name">Name:</label>
+        <input type="text" id="order-name" disabled><br>
+        <label for="order-phone">Phone:</label>
+        <input type="tel" id="order-phone" disabled><br>
+        <label for="order-address">Address:</label>
+        <input type="text" id="order-address" required><br>
+        <button class="place-order">Place Order</button>
+        <button class="close">Close</button>
+    </dialog>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <!-- Main JavaScript -->
+    <script>
+        // Sample food data (this would typically come from a backend)
+        let foodItems = [
+            { id: 1, name: 'Pizza Margherita', price: 12.99, image: 'https://via.placeholder.com/200x200?text=Pizza', category: 'Italian', description: 'Classic Italian pizza with tomatoes and mozzarella' },
+            { id: 2, name: 'Cheeseburger', price: 8.99, image: 'https://via.placeholder.com/200x200?text=Burger', category: 'Fast Food', description: 'Juicy beef patty with cheese and fresh vegetables' },
+            { id: 3, name: 'Sushi Roll', price: 15.99, image: 'https://via.placeholder.com/200x200?text=Sushi', category: 'Japanese', description: 'Fresh salmon and avocado roll' },
+            { id: 4, name: 'Pad Thai', price: 11.99, image: 'https://via.placeholder.com/200x200?text=PadThai', category: 'Thai', description: 'Stir-fried rice noodles with shrimp' }
+        ];
+
+        let orders = [];
+        let currentUser = null;
+
+        // Initialize food items if not exists
+        if (!localStorage.getItem('foodItems')) {
+            localStorage.setItem('foodItems', JSON.stringify(foodItems));
+        } else {
+            foodItems = JSON.parse(localStorage.getItem('foodItems'));
+        }
+
+        // DOM Elements
+        const authScreen = document.getElementById('auth-screen');
+        const mainApp = document.getElementById('main-app');
+        const authForm = document.getElementById('auth-form');
+        const orderDialog = document.getElementById('order-dialog');
+        const foodCategoriesContainer = document.querySelector('.food-categories');
+        const searchInput = document.getElementById('search-input');
+        const searchResults = document.querySelector('.search-results');
+        const ordersList = document.querySelector('.orders-list');
+        const profileContainer = document.querySelector('.profile-container');
+
+        // Initialize dialog
+        if (!orderDialog.showModal) {
+            dialogPolyfill.registerDialog(orderDialog);
+        }
+
+        // Event Listeners
+        authForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            currentUser = {
+                id: Date.now(),
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                registeredDate: new Date().toISOString()
+            };
+            
+            // Store user in localStorage
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            users.push(currentUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            
+            showMainApp();
+        });
+
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredItems = foodItems.filter(item => 
+                item.name.toLowerCase().includes(searchTerm) ||
+                item.category.toLowerCase().includes(searchTerm)
+            );
+            displaySearchResults(filteredItems);
+        });
+
+        // Functions
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.main-section').forEach(section => {
+                section.style.display = 'none';
+            });
+
+            // Show selected section
+            document.getElementById(`${sectionName}-section`).style.display = 'block';
+
+            // Update active button
+            document.querySelectorAll('.bottom-nav button').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.querySelector(`.bottom-nav button[onclick="showSection('${sectionName}')"]`).classList.add('active');
+
+            // Update content based on section
+            switch(sectionName) {
+                case 'home':
+                    displayFoodItems();
+                    break;
+                case 'search':
+                    document.getElementById('search-input').value = '';
+                    document.querySelector('.search-results').innerHTML = '';
+                    break;
+                case 'orders':
+                    displayOrders();
+                    break;
+                case 'profile':
+                    displayProfile();
+                    break;
+            }
+        }
+
+        function showMainApp() {
+            authScreen.style.display = 'none';
+            mainApp.style.display = 'block';
+            showSection('home'); // Show home section by default
+        }
+
+        function displayFoodItems() {
+            const categories = [...new Set(foodItems.map(item => item.category))];
+            foodCategoriesContainer.innerHTML = '';
+
+            categories.forEach(category => {
+                const categoryItems = foodItems.filter(item => item.category === category);
+                const categorySection = document.createElement('div');
+                categorySection.innerHTML = `
+                    <h4 class="category-title">
+                        <span class="category-icon material-icons">restaurant</span>
+                        ${category}
+                    </h4>
+                    <div class="category-items">
+                        ${categoryItems.map(item => `
+                            <div class="food-item">
+                                <img src="${item.image}" alt="${item.name}">
+                                <h5>${item.name}</h5>
+                                <p>${item.description}</p>
+                                <strong>$${item.price}</strong>
+                                <button onclick="openOrderDialog(${item.id})">Order</button>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                foodCategoriesContainer.appendChild(categorySection);
+            });
+        }
+
+        function openOrderDialog(foodId) {
+            if (currentUser) {
+                const foodItem = foodItems.find(item => item.id === foodId);
+                document.getElementById('order-name').value = currentUser.name;
+                document.getElementById('order-phone').value = currentUser.phone;
+                orderDialog.showModal();
+
+                document.querySelector('.place-order').addEventListener('click', () => {
+                    const orderDetails = {
+                        foodItem,
+                        user: currentUser,
+                        address: document.getElementById('order-address').value,
+                        status: 'pending'
+                    };
+
+                    // Add order to list and close dialog
+                    orders.push(orderDetails);
+                    localStorage.setItem('orders', JSON.stringify(orders));
+                    orderDialog.close();
+                    showSection('orders');
+                });
+            }
+        }
+
+        function displayOrders() {
+            ordersList.innerHTML = orders.map(order => `
+                <div class="order-item">
+                    <strong>${order.foodItem.name}</strong><br>
+                    ${order.foodItem.description}<br>
+                    Address: ${order.address}<br>
+                    Status: <span class="order-status">${order.status}</span><br>
+                </div>
+            `).join('');
+        }
+
+        function displaySearchResults(filteredItems) {
+            searchResults.innerHTML = filteredItems.map(item => `
+                <div class="search-item">
+                    <img src="${item.image}" alt="${item.name}">
+                    <h5>${item.name}</h5>
+                    <p>${item.description}</p>
+                    <strong>$${item.price}</strong>
+                    <button onclick="openOrderDialog(${item.id})">Order</button>
+                </div>
+            `).join('');
+        }
+
+        function displayProfile() {
+            profileContainer.innerHTML = `
+                <strong>Name:</strong> ${currentUser.name}<br>
+                <strong>Email:</strong> ${currentUser.email}<br>
+                <strong>Phone:</strong> ${currentUser.phone}<br>
+                <strong>Registered:</strong> ${new Date(currentUser.registeredDate).toLocaleDateString()}
+            `;
+        }
+    </script>
+
+</body>
+</html>
