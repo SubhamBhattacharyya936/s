@@ -3,364 +3,1097 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuickKart</title>
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" 
-          integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" 
-          crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" 
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
+    <title>Government Job Updates</title>
     <style>
-        /* Reset default padding and margin */
-        * {
+                * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+
         body {
-            background-color: #6c757d;
-        }
-
-        /* Fixed Top Navbar */
-        .navbar1 {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background-color: #1d1c21;
-            color: white;
-            padding: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            z-index: 1000;
-        }
-
-        .navbar1 .logo {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-        }
-
-        .navbar1 .title h1 {
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        /* Fixed Bottom Navbar */
-        .navbar3 {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background-color: #1d1c21;
-            color: white;
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-            z-index: 1000;
-        }
-
-        .navbar3 .nav-item {
-            text-align: center;
-            flex: 1;
-        }
-
-        .navbar3 .nav-item a {
-            color: white;
-            text-decoration: none;
-        }
-
-        .content {
-            padding: 20px;
-            margin-bottom: 60px;
-        }
-
-        .content img {
-            width: 100%;
-            height: 200px;
-            object-fit: contain;
-        }
-
-        .category-title {
-            font-size: 20px;
-            font-weight: bold;
+            background-color: #f5f5f5;
             color: #333;
         }
 
-        .food-item {
-            margin: 10px;
+        /* Header Styles */
+        header {
+            position: relative;
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
         }
 
-        .mdl-card {
+        .banner {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .banner-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+            padding: 15px;
+            color: white;
+        }
+
+        .banner-overlay h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+        }
+
+        .banner-overlay p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Navigation Styles */
+        .navbar {
+            background: linear-gradient(to right, #1a3e72, #2a5298);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-tabs {
+            display: flex;
+            overflow-x: auto;
+            white-space: nowrap;
+            padding: 0 10px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .nav-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-tab {
+            padding: 12px 15px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 80px;
+        }
+
+        .nav-tab i {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .nav-tab span {
+            font-size: 0.75rem;
+            text-align: center;
+        }
+
+        .nav-tab.active {
+            border-bottom: 3px solid #ffcc00;
+            color: #ffcc00;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            padding: 15px;
+            margin-bottom: 60px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .search-container {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 15px;
+            padding-left: 45px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+        }
+
+        /* Category Card Styles */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .category-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .category-card:active {
+            transform: scale(0.98);
+        }
+
+        .category-img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+        }
+
+        .category-info {
+            padding: 12px;
+        }
+
+        .category-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #1a3e72;
+        }
+
+        .category-count {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        /* Job Card Styles */
+        .job-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .job-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .job-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1a3e72;
+            margin-bottom: 5px;
+        }
+
+        .job-category {
+            display: inline-block;
+            background-color: #e6f0ff;
+            color: #1a3e72;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .job-desc {
+            font-size: 0.85rem;
+            color: #555;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .job-dates {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #666;
             margin-bottom: 15px;
         }
+
+        .view-more {
+            display: block;
+            text-align: center;
+            background-color: #1a3e72;
+            color: white;
+            padding: 8px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        /* Job Detail Styles */
+        .job-detail {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+        }
+
+        .detail-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .detail-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1a3e72;
+            margin-bottom: 10px;
+        }
+
+        .detail-desc {
+            font-size: 0.9rem;
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .detail-dates {
+            margin-bottom: 20px;
+        }
+
+        .date-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 0.85rem;
+        }
+
+        .date-label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .date-value {
+            color: #1a3e72;
+            font-weight: 500;
+        }
+
+        .apply-btn {
+            display: block;
+            text-align: center;
+            background-color: #ff6b6b;
+            color: white;
+            padding: 12px;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+
+        /* Important Dates Styles */
+        .date-list {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .date-item-header {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 15px;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #eee;
+        }
+
+        .date-job-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #1a3e72;
+        }
+
+        .date-item-content {
+            padding: 12px 15px;
+        }
+
+        .date-row {
+            display: flex;
+            margin-bottom: 8px;
+        }
+
+        .date-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .date-name {
+            flex: 1;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .date-value {
+            flex: 1;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #333;
+            text-align: right;
+        }
+
+        /* Result Card Styles */
+        .result-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .result-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+        }
+
+        .result-info {
+            padding: 15px;
+        }
+
+        .result-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1a3e72;
+            margin-bottom: 10px;
+        }
+
+        .result-dates {
+            margin-bottom: 15px;
+        }
+
+        .result-date-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .result-btn {
+            display: block;
+            text-align: center;
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        /* Back Button */
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 15px;
+            color: #1a3e72;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .back-btn i {
+            margin-right: 5px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1a3e72;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 0.8rem;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 480px) {
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-tab {
+                padding: 15px 15px;
+                font-size: 0.85rem;
+            }
+        }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-
-    <!-- Fixed Top Navbar -->
-    <div class="navbar1">
-        <div class="logo">
-            <img src="images/logo.png" alt="logo Photo" class="logo">
+    <header>
+        <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Government Job Updates" class="banner">
+        <div class="banner-overlay">
+            <h1>Government Job Updates</h1>
+            <p>Latest SSC, APSP, and other government job notifications</p>
         </div>
-        <div class="title"><strong><h1>QuickKart</h1></strong></div>
-        <div class="login"></div>
-    </div>
+    </header>
 
-    <!-- Authentication Screen -->
-    <div id="auth-screen" style="display: block;">
-        <form id="auth-form" class="container">
-            <h2>Login / Register</h2>
-            <input type="text" id="name" placeholder="Name" required><br>
-            <input type="email" id="email" placeholder="Email" required><br>
-            <input type="tel" id="phone" placeholder="Phone Number" required><br>
-            <button type="submit">Login</button>
-        </form>
-    </div>
+    <nav class="navbar">
+        <div class="nav-tabs">
+            <div class="nav-tab active" data-tab="categories">
+                <i class="fas fa-list-alt"></i>
+                <span>Categories</span>
+            </div>
+            <div class="nav-tab" data-tab="jobs">
+                <i class="fas fa-briefcase"></i>
+                <span>All Jobs</span>
+            </div>
+            <div class="nav-tab" data-tab="dates">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Dates</span>
+            </div>
+            <div class="nav-tab" data-tab="results">
+                <i class="fas fa-clipboard-check"></i>
+                <span>Results</span>
+            </div>
+        </div>
+    </nav>
 
-    <!-- Main App Screen -->
-    <div id="main-app" style="display: none;">
-        <!-- Home Section -->
-        <div id="home-section" class="main-section">
-            <h2>Food Categories</h2>
-            <div class="food-categories"></div>
+    <main class="main-content">
+        <!-- Categories Tab -->
+        <div class="tab-content active" id="categories">
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="Search job categories..." id="categorySearch">
+            </div>
+            
+            <div class="category-grid" id="categoryContainer">
+                <!-- Categories will be loaded here by JavaScript -->
+            </div>
         </div>
 
-        <!-- Search Section -->
-        <div id="search-section" class="main-section">
-            <input type="text" id="search-input" placeholder="Search for food...">
-            <div class="search-results"></div>
+        <!-- Jobs Tab -->
+        <div class="tab-content" id="jobs">
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="Search job posts..." id="jobSearch">
+            </div>
+            
+            <div class="job-list" id="jobContainer">
+                <!-- Job posts will be loaded here by JavaScript -->
+            </div>
         </div>
 
-        <!-- Orders Section -->
-        <div id="orders-section" class="main-section">
-            <h4>Your Orders</h4>
-            <div class="orders-list"></div>
+        <!-- Important Dates Tab -->
+        <div class="tab-content" id="dates">
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="Search important dates..." id="dateSearch">
+            </div>
+            
+            <div class="date-list" id="dateContainer">
+                <!-- Important dates will be loaded here by JavaScript -->
+            </div>
         </div>
 
-        <!-- Profile Section -->
-        <div id="profile-section" class="main-section">
-            <div class="profile-container"></div>
+        <!-- Results Tab -->
+        <div class="tab-content" id="results">
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="Search job results..." id="resultSearch">
+            </div>
+            
+            <div class="result-list" id="resultContainer">
+                <!-- Job results will be loaded here by JavaScript -->
+            </div>
         </div>
-    </div>
 
-    <!-- Fixed Bottom Navbar -->
-    <div class="navbar3">
-        <div class="nav-item"><a href="#" onclick="showSection('home')"><i class="fas fa-home"></i> Home</a></div>
-        <div class="nav-item"><a href="#" onclick="showSection('search')"><i class="fas fa-search"></i> Search</a></div>
-        <div class="nav-item"><a href="#" onclick="showSection('orders')"><i class="fas fa-box"></i> Orders</a></div>
-        <div class="nav-item"><a href="#" onclick="showSection('profile')"><i class="fas fa-user"></i> Profile</a></div>
-    </div>
+        <!-- Job Detail View (hidden by default) -->
+        <div class="tab-content" id="jobDetail">
+            <a href="#" class="back-btn" id="backToJobs"><i class="fas fa-arrow-left"></i> Back to Jobs</a>
+            
+            <div class="job-detail" id="jobDetailContent">
+                <!-- Job detail will be loaded here by JavaScript -->
+            </div>
+        </div>
 
-    <!-- Order Dialog Modal -->
-    <dialog id="order-dialog">
-        <h2>Place Order</h2>
-        <label for="order-name">Name:</label>
-        <input type="text" id="order-name" disabled><br>
-        <label for="order-phone">Phone:</label>
-        <input type="tel" id="order-phone" disabled><br>
-        <label for="order-address">Address:</label>
-        <input type="text" id="order-address" required><br>
-        <button class="place-order">Place Order</button>
-        <button class="close">Close</button>
-    </dialog>
+        <!-- Category Jobs View (hidden by default) -->
+        <div class="tab-content" id="categoryJobs">
+            <a href="#" class="back-btn" id="backToCategories"><i class="fas fa-arrow-left"></i> Back to Categories</a>
+            
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="Search jobs in this category..." id="categoryJobSearch">
+            </div>
+            
+            <div class="job-list" id="categoryJobContainer">
+                <!-- Category jobs will be loaded here by JavaScript -->
+            </div>
+        </div>
+    </main>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <footer>
+        <p>&copy; 2023 Government Job Updates. All rights reserved.</p>
+    </footer>
 
-    <!-- Main JavaScript -->
     <script>
-        // Sample food data (this would typically come from a backend)
-        let foodItems = [
-            { id: 1, name: 'Pizza Margherita', price: 12.99, image: 'https://via.placeholder.com/200x200?text=Pizza', category: 'Italian', description: 'Classic Italian pizza with tomatoes and mozzarella' },
-            { id: 2, name: 'Cheeseburger', price: 8.99, image: 'https://via.placeholder.com/200x200?text=Burger', category: 'Fast Food', description: 'Juicy beef patty with cheese and fresh vegetables' },
-            { id: 3, name: 'Sushi Roll', price: 15.99, image: 'https://via.placeholder.com/200x200?text=Sushi', category: 'Japanese', description: 'Fresh salmon and avocado roll' },
-            { id: 4, name: 'Pad Thai', price: 11.99, image: 'https://via.placeholder.com/200x200?text=PadThai', category: 'Thai', description: 'Stir-fried rice noodles with shrimp' }
-        ];
-
-        let orders = [];
-        let currentUser = null;
-
-        // Initialize food items if not exists
-        if (!localStorage.getItem('foodItems')) {
-            localStorage.setItem('foodItems', JSON.stringify(foodItems));
-        } else {
-            foodItems = JSON.parse(localStorage.getItem('foodItems'));
-        }
+        // Sample data for the application
+        const jobData = {
+            categories: [
+                {
+                    id: 1,
+                    title: "SSC Jobs",
+                    image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                    count: 12
+                },
+                {
+                    id: 2,
+                    title: "APSC Jobs",
+                    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                    count: 8
+                },
+                {
+                    id: 3,
+                    title: "Banking Jobs",
+                    image: "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                    count: 15
+                },
+                {
+                    id: 4,
+                    title: "Railway Jobs",
+                    image: "https://images.unsplash.com/photo-1519817650390-64a93db51149?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                    count: 7
+                },
+                {
+                    id: 5,
+                    title: "Teaching Jobs",
+                    image: "https://images.unsplash.com/photo-1588072432836-e10032774350?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                    count: 9
+                },
+                {
+                    id: 6,
+                    title: "Defense Jobs",
+                    image: "https://images.unsplash.com/photo-1540962351504-03099e0a754b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                    count: 11
+                }
+            ],
+            jobs: [
+                {
+                    id: 1,
+                    title: "SSC CGL 2023 Notification",
+                    category: "SSC Jobs",
+                    image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                    desc: "Staff Selection Commission (SSC) has released the notification for Combined Graduate Level Examination (CGL) 2023 for recruitment to various Group B and Group C posts in different Ministries/Departments/Organizations of Government of India.",
+                    applyDate: "01-06-2023",
+                    lastDate: "30-06-2023",
+                    examDate: "15-08-2023",
+                    resultDate: "30-11-2023",
+                    notificationDate: "25-05-2023",
+                    applyLink: "https://ssc.nic.in"
+                },
+                {
+                    id: 2,
+                    title: "APSC Combined Competitive Exam 2023",
+                    category: "APSC Jobs",
+                    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                    desc: "Assam Public Service Commission (APSC) has released the notification for Combined Competitive Examination 2023 for recruitment to various posts under the Government of Assam.",
+                    applyDate: "10-06-2023",
+                    lastDate: "10-07-2023",
+                    examDate: "20-08-2023",
+                    resultDate: "15-12-2023",
+                    notificationDate: "01-06-2023",
+                    applyLink: "https://apsc.nic.in"
+                },
+                {
+                    id: 3,
+                    title: "SSC CHSL 2023 Notification",
+                    category: "SSC Jobs",
+                    image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                    desc: "Staff Selection Commission (SSC) has released the notification for Combined Higher Secondary Level (CHSL) Examination 2023 for recruitment to Lower Division Clerk (LDC)/ Junior Secretariat Assistant (JSA), Postal Assistant (PA)/ Sorting Assistant (SA) and Data Entry Operator (DEO) posts.",
+                    applyDate: "15-06-2023",
+                    lastDate: "15-07-2023",
+                    examDate: "01-09-2023",
+                    resultDate: "15-12-2023",
+                    notificationDate: "10-06-2023",
+                    applyLink: "https://ssc.nic.in"
+                },
+                {
+                    id: 4,
+                    title: "APSC Assistant Engineer Recruitment 2023",
+                    category: "APSC Jobs",
+                    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                    desc: "Assam Public Service Commission (APSC) has released the notification for recruitment of Assistant Engineers in various departments under the Government of Assam.",
+                    applyDate: "05-06-2023",
+                    lastDate: "05-07-2023",
+                    examDate: "25-08-2023",
+                    resultDate: "10-12-2023",
+                    notificationDate: "30-05-2023",
+                    applyLink: "https://apsc.nic.in"
+                },
+                {
+                    id: 5,
+                    title: "SSC JE 2023 Notification",
+                    category: "SSC Jobs",
+                    image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                    desc: "Staff Selection Commission (SSC) has released the notification for Junior Engineer (JE) Examination 2023 for recruitment to Junior Engineer posts in various departments.",
+                    applyDate: "20-06-2023",
+                    lastDate: "20-07-2023",
+                    examDate: "05-09-2023",
+                    resultDate: "20-12-2023",
+                    notificationDate: "15-06-2023",
+                    applyLink: "https://ssc.nic.in"
+                },
+                {
+                    id: 6,
+                    title: "APSC Research Officer Recruitment 2023",
+                    category: "APSC Jobs",
+                    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                    desc: "Assam Public Service Commission (APSC) has released the notification for recruitment of Research Officers in various departments under the Government of Assam.",
+                    applyDate: "15-06-2023",
+                    lastDate: "15-07-2023",
+                    examDate: "30-08-2023",
+                    resultDate: "15-12-2023",
+                    notificationDate: "10-06-2023",
+                    applyLink: "https://apsc.nic.in"
+                }
+            ],
+            results: [
+                {
+                    id: 1,
+                    title: "SSC CGL 2022 Final Result",
+                    category: "SSC Jobs",
+                    image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                    notificationDate: "15-01-2022",
+                    examDate: "15-04-2022",
+                    resultDate: "30-05-2023",
+                    resultLink: "https://ssc.nic.in"
+                },
+                {
+                    id: 2,
+                    title: "APSC CCE 2022 Final Result",
+                    category: "APSC Jobs",
+                    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                    notificationDate: "10-02-2022",
+                    examDate: "20-05-2022",
+                    resultDate: "25-05-2023",
+                    resultLink: "https://apsc.nic.in"
+                },
+                {
+                    id: 3,
+                    title: "SSC CHSL 2022 Final Result",
+                    category: "SSC Jobs",
+                    image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                    notificationDate: "20-03-2022",
+                    examDate: "25-06-2022",
+                    resultDate: "01-06-2023",
+                    resultLink: "https://ssc.nic.in"
+                },
+                {
+                    id: 4,
+                    title: "APSC AE 2022 Final Result",
+                    category: "APSC Jobs",
+                    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                    notificationDate: "15-04-2022",
+                    examDate: "30-07-2022",
+                    resultDate: "05-06-2023",
+                    resultLink: "https://apsc.nic.in"
+                }
+            ]
+        };
 
         // DOM Elements
-        const authScreen = document.getElementById('auth-screen');
-        const mainApp = document.getElementById('main-app');
-        const authForm = document.getElementById('auth-form');
-        const orderDialog = document.getElementById('order-dialog');
-        const foodCategoriesContainer = document.querySelector('.food-categories');
-        const searchInput = document.getElementById('search-input');
-        const searchResults = document.querySelector('.search-results');
-        const ordersList = document.querySelector('.orders-list');
-        const profileContainer = document.querySelector('.profile-container');
+        const navTabs = document.querySelectorAll('.nav-tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const categoryContainer = document.getElementById('categoryContainer');
+        const jobContainer = document.getElementById('jobContainer');
+        const dateContainer = document.getElementById('dateContainer');
+        const resultContainer = document.getElementById('resultContainer');
+        const jobDetailContent = document.getElementById('jobDetailContent');
+        const categoryJobContainer = document.getElementById('categoryJobContainer');
+        const backToJobs = document.getElementById('backToJobs');
+        const backToCategories = document.getElementById('backToCategories');
+        const categorySearch = document.getElementById('categorySearch');
+        const jobSearch = document.getElementById('jobSearch');
+        const dateSearch = document.getElementById('dateSearch');
+        const resultSearch = document.getElementById('resultSearch');
+        const categoryJobSearch = document.getElementById('categoryJobSearch');
 
-        // Initialize dialog
-        if (!orderDialog.showModal) {
-            dialogPolyfill.registerDialog(orderDialog);
+        // Initialize the app
+        function initApp() {
+            renderCategories();
+            renderJobs();
+            renderImportantDates();
+            renderResults();
+            
+            // Set up event listeners
+            setupEventListeners();
         }
 
-        // Event Listeners
-        authForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            currentUser = {
-                id: Date.now(),
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                registeredDate: new Date().toISOString()
-            };
+        // Render categories
+        function renderCategories(filter = '') {
+            categoryContainer.innerHTML = '';
             
-            // Store user in localStorage
-            const users = JSON.parse(localStorage.getItem('users') || '[]');
-            users.push(currentUser);
-            localStorage.setItem('users', JSON.stringify(users));
-            localStorage.setItem('currentUser', JSON.stringify(currentUser));
-            
-            showMainApp();
-        });
-
-        searchInput.addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            const filteredItems = foodItems.filter(item => 
-                item.name.toLowerCase().includes(searchTerm) ||
-                item.category.toLowerCase().includes(searchTerm)
+            const filteredCategories = jobData.categories.filter(category => 
+                category.title.toLowerCase().includes(filter.toLowerCase())
             );
-            displaySearchResults(filteredItems);
-        });
-
-        // Functions
-        function showSection(sectionName) {
-            // Hide all sections
-            document.querySelectorAll('.main-section').forEach(section => {
-                section.style.display = 'none';
-            });
-
-            // Show selected section
-            document.getElementById(`${sectionName}-section`).style.display = 'block';
-
-            // Update active button
-            document.querySelectorAll('.bottom-nav button').forEach(button => {
-                button.classList.remove('active');
-            });
-            document.querySelector(`.bottom-nav button[onclick="showSection('${sectionName}')"]`).classList.add('active');
-
-            // Update content based on section
-            switch(sectionName) {
-                case 'home':
-                    displayFoodItems();
-                    break;
-                case 'search':
-                    document.getElementById('search-input').value = '';
-                    document.querySelector('.search-results').innerHTML = '';
-                    break;
-                case 'orders':
-                    displayOrders();
-                    break;
-                case 'profile':
-                    displayProfile();
-                    break;
-            }
-        }
-
-        function showMainApp() {
-            authScreen.style.display = 'none';
-            mainApp.style.display = 'block';
-            showSection('home'); // Show home section by default
-        }
-
-        function displayFoodItems() {
-            const categories = [...new Set(foodItems.map(item => item.category))];
-            foodCategoriesContainer.innerHTML = '';
-
-            categories.forEach(category => {
-                const categoryItems = foodItems.filter(item => item.category === category);
-                const categorySection = document.createElement('div');
-                categorySection.innerHTML = `
-                    <h4 class="category-title">
-                        <span class="category-icon material-icons">restaurant</span>
-                        ${category}
-                    </h4>
-                    <div class="category-items">
-                        ${categoryItems.map(item => `
-                            <div class="food-item">
-                                <img src="${item.image}" alt="${item.name}">
-                                <h5>${item.name}</h5>
-                                <p>${item.description}</p>
-                                <strong>$${item.price}</strong>
-                                <button onclick="openOrderDialog(${item.id})">Order</button>
-                            </div>
-                        `).join('')}
+            
+            filteredCategories.forEach(category => {
+                const categoryCard = document.createElement('div');
+                categoryCard.className = 'category-card';
+                categoryCard.innerHTML = `
+                    <img src="${category.image}" alt="${category.title}" class="category-img">
+                    <div class="category-info">
+                        <h3 class="category-title">${category.title}</h3>
+                        <p class="category-count">${category.count} Jobs Available</p>
                     </div>
                 `;
-                foodCategoriesContainer.appendChild(categorySection);
+                
+                categoryCard.addEventListener('click', () => {
+                    showCategoryJobs(category.title);
+                });
+                
+                categoryContainer.appendChild(categoryCard);
             });
         }
 
-        function openOrderDialog(foodId) {
-            if (currentUser) {
-                const foodItem = foodItems.find(item => item.id === foodId);
-                document.getElementById('order-name').value = currentUser.name;
-                document.getElementById('order-phone').value = currentUser.phone;
-                orderDialog.showModal();
-
-                document.querySelector('.place-order').addEventListener('click', () => {
-                    const orderDetails = {
-                        foodItem,
-                        user: currentUser,
-                        address: document.getElementById('order-address').value,
-                        status: 'pending'
-                    };
-
-                    // Add order to list and close dialog
-                    orders.push(orderDetails);
-                    localStorage.setItem('orders', JSON.stringify(orders));
-                    orderDialog.close();
-                    showSection('orders');
+        // Render jobs
+        function renderJobs(filter = '') {
+            jobContainer.innerHTML = '';
+            
+            const filteredJobs = jobData.jobs.filter(job => 
+                job.title.toLowerCase().includes(filter.toLowerCase()) || 
+                job.category.toLowerCase().includes(filter.toLowerCase())
+            );
+            
+            filteredJobs.forEach(job => {
+                const jobCard = document.createElement('div');
+                jobCard.className = 'job-card';
+                jobCard.innerHTML = `
+                    <h3 class="job-title">${job.title}</h3>
+                    <span class="job-category">${job.category}</span>
+                    <p class="job-desc">${job.desc}</p>
+                    <div class="job-dates">
+                        <span>Apply from: ${job.applyDate}</span>
+                        <span>Last date: ${job.lastDate}</span>
+                    </div>
+                    <a href="#" class="view-more" data-job-id="${job.id}">View Details</a>
+                `;
+                
+                jobContainer.appendChild(jobCard);
+            });
+            
+            // Add event listeners to view more buttons
+            document.querySelectorAll('.view-more').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const jobId = parseInt(button.getAttribute('data-job-id'));
+                    showJobDetail(jobId);
                 });
+            });
+        }
+
+        // Render important dates
+        function renderImportantDates(filter = '') {
+            dateContainer.innerHTML = '';
+            
+            const filteredJobs = jobData.jobs.filter(job => 
+                job.title.toLowerCase().includes(filter.toLowerCase()) || 
+                job.category.toLowerCase().includes(filter.toLowerCase())
+            );
+            
+            filteredJobs.forEach(job => {
+                const dateItem = document.createElement('div');
+                dateItem.className = 'date-item-header';
+                dateItem.innerHTML = `
+                    <div class="date-job-title">${job.title}</div>
+                    <div class="date-value">${job.category}</div>
+                `;
+                
+                const dateContent = document.createElement('div');
+                dateContent.className = 'date-item-content';
+                dateContent.innerHTML = `
+                    <div class="date-row">
+                        <div class="date-name">Notification Date:</div>
+                        <div class="date-value">${job.notificationDate}</div>
+                    </div>
+                    <div class="date-row">
+                        <div class="date-name">Last Date to Apply:</div>
+                        <div class="date-value">${job.lastDate}</div>
+                    </div>
+                    <div class="date-row">
+                        <div class="date-name">Exam Date:</div>
+                        <div class="date-value">${job.examDate}</div>
+                    </div>
+                    <div class="date-row">
+                        <div class="date-name">Result Date:</div>
+                        <div class="date-value">${job.resultDate}</div>
+                    </div>
+                `;
+                
+                dateContainer.appendChild(dateItem);
+                dateContainer.appendChild(dateContent);
+            });
+        }
+
+        // Render results
+        function renderResults(filter = '') {
+            resultContainer.innerHTML = '';
+            
+            const filteredResults = jobData.results.filter(result => 
+                result.title.toLowerCase().includes(filter.toLowerCase()) || 
+                result.category.toLowerCase().includes(filter.toLowerCase())
+            );
+            
+            filteredResults.forEach(result => {
+                const resultCard = document.createElement('div');
+                resultCard.className = 'result-card';
+                resultCard.innerHTML = `
+                    <img src="${result.image}" alt="${result.title}" class="result-img">
+                    <div class="result-info">
+                        <h3 class="result-title">${result.title}</h3>
+                        <div class="result-dates">
+                            <div class="result-date-item">
+                                <span>Notification:</span>
+                                <span>${result.notificationDate}</span>
+                            </div>
+                            <div class="result-date-item">
+                                <span>Exam Date:</span>
+                                <span>${result.examDate}</span>
+                            </div>
+                            <div class="result-date-item">
+                                <span>Result Date:</span>
+                                <span>${result.resultDate}</span>
+                            </div>
+                        </div>
+                        <a href="${result.resultLink}" target="_blank" class="result-btn">View Result</a>
+                    </div>
+                `;
+                
+                resultContainer.appendChild(resultCard);
+            });
+        }
+
+        // Show job detail
+        function showJobDetail(jobId) {
+            const job = jobData.jobs.find(j => j.id === jobId);
+            
+            if (job) {
+                jobDetailContent.innerHTML = `
+                    <img src="${job.image}" alt="${job.title}" class="detail-img">
+                    <h2 class="detail-title">${job.title}</h2>
+                    <p class="detail-desc">${job.desc}</p>
+                    
+                    <div class="detail-dates">
+                        <div class="date-item">
+                            <span class="date-label">Notification Date:</span>
+                            <span class="date-value">${job.notificationDate}</span>
+                        </div>
+                        <div class="date-item">
+                            <span class="date-label">Apply Start Date:</span>
+                            <span class="date-value">${job.applyDate}</span>
+                        </div>
+                        <div class="date-item">
+                            <span class="date-label">Last Date to Apply:</span>
+                            <span class="date-value">${job.lastDate}</span>
+                        </div>
+                        <div class="date-item">
+                            <span class="date-label">Exam Date:</span>
+                            <span class="date-value">${job.examDate}</span>
+                        </div>
+                        <div class="date-item">
+                            <span class="date-label">Result Date:</span>
+                            <span class="date-value">${job.resultDate}</span>
+                        </div>
+                    </div>
+                    
+                    <a href="${job.applyLink}" target="_blank" class="apply-btn">Apply Now</a>
+                `;
+                
+                // Switch to job detail view
+                switchTab('jobDetail');
             }
         }
 
-        function displayOrders() {
-            ordersList.innerHTML = orders.map(order => `
-                <div class="order-item">
-                    <strong>${order.foodItem.name}</strong><br>
-                    ${order.foodItem.description}<br>
-                    Address: ${order.address}<br>
-                    Status: <span class="order-status">${order.status}</span><br>
-                </div>
-            `).join('');
+        // Show jobs for a specific category
+        function showCategoryJobs(category) {
+            const filteredJobs = jobData.jobs.filter(job => job.category === category);
+            
+            categoryJobContainer.innerHTML = '';
+            
+            if (filteredJobs.length > 0) {
+                filteredJobs.forEach(job => {
+                    const jobCard = document.createElement('div');
+                    jobCard.className = 'job-card';
+                    jobCard.innerHTML = `
+                        <h3 class="job-title">${job.title}</h3>
+                        <span class="job-category">${job.category}</span>
+                        <p class="job-desc">${job.desc}</p>
+                        <div class="job-dates">
+                            <span>Apply from: ${job.applyDate}</span>
+                            <span>Last date: ${job.lastDate}</span>
+                        </div>
+                        <a href="#" class="view-more" data-job-id="${job.id}">View Details</a>
+                    `;
+                    
+                    jobCard.querySelector('.view-more').addEventListener('click', (e) => {
+                        e.preventDefault();
+                        showJobDetail(job.id);
+                    });
+                    
+                    categoryJobContainer.appendChild(jobCard);
+                });
+            } else {
+                categoryJobContainer.innerHTML = '<p style="text-align: center; padding: 20px;">No jobs found in this category.</p>';
+            }
+            
+            // Set up search for category jobs
+            categoryJobSearch.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                const jobCards = categoryJobContainer.querySelectorAll('.job-card');
+                
+                jobCards.forEach(card => {
+                    const title = card.querySelector('.job-title').textContent.toLowerCase();
+                    const desc = card.querySelector('.job-desc').textContent.toLowerCase();
+                    
+                    if (title.includes(searchTerm) || desc.includes(searchTerm)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Switch to category jobs view
+            switchTab('categoryJobs');
         }
 
-        function displaySearchResults(filteredItems) {
-            searchResults.innerHTML = filteredItems.map(item => `
-                <div class="search-item">
-                    <img src="${item.image}" alt="${item.name}">
-                    <h5>${item.name}</h5>
-                    <p>${item.description}</p>
-                    <strong>$${item.price}</strong>
-                    <button onclick="openOrderDialog(${item.id})">Order</button>
-                </div>
-            `).join('');
+        // Switch between tabs
+        function switchTab(tabId) {
+            // Hide all tab contents
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Deactivate all nav tabs
+            navTabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Activate the selected tab
+            document.getElementById(tabId).classList.add('active');
+            
+            // If switching to one of the main tabs, activate the corresponding nav tab
+            if (tabId !== 'jobDetail' && tabId !== 'categoryJobs') {
+                document.querySelector(`.nav-tab[data-tab="${tabId}"]`).classList.add('active');
+            }
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
         }
 
-        function displayProfile() {
-            profileContainer.innerHTML = `
-                <strong>Name:</strong> ${currentUser.name}<br>
-                <strong>Email:</strong> ${currentUser.email}<br>
-                <strong>Phone:</strong> ${currentUser.phone}<br>
-                <strong>Registered:</strong> ${new Date(currentUser.registeredDate).toLocaleDateString()}
-            `;
+        // Set up event listeners
+        function setupEventListeners() {
+            // Nav tab clicks
+            navTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+            
+            // Back buttons
+            backToJobs.addEventListener('click', (e) => {
+                e.preventDefault();
+                switchTab('jobs');
+            });
+            
+            backToCategories.addEventListener('click', (e) => {
+                e.preventDefault();
+                switchTab('categories');
+            });
+            
+            // Search functionality
+            categorySearch.addEventListener('input', (e) => {
+                renderCategories(e.target.value);
+            });
+            
+            jobSearch.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                const jobCards = jobContainer.querySelectorAll('.job-card');
+                
+                jobCards.forEach(card => {
+                    const title = card.querySelector('.job-title').textContent.toLowerCase();
+                    const category = card.querySelector('.job-category').textContent.toLowerCase();
+                    const desc = card.querySelector('.job-desc').textContent.toLowerCase();
+                    
+                    if (title.includes(searchTerm) || category.includes(searchTerm) || desc.includes(searchTerm)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+            
+            dateSearch.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                const dateItems = dateContainer.querySelectorAll('.date-item-header');
+                
+                dateItems.forEach(item => {
+                    const title = item.querySelector('.date-job-title').textContent.toLowerCase();
+                    const category = item.querySelector('.date-value').textContent.toLowerCase();
+                    
+                    if (title.includes(searchTerm) || category.includes(searchTerm)) {
+                        item.style.display = 'flex';
+                        item.nextElementSibling.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                        item.nextElementSibling.style.display = 'none';
+                    }
+                });
+            });
+            
+            resultSearch.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                const resultCards = resultContainer.querySelectorAll('.result-card');
+                
+                resultCards.forEach(card => {
+                    const title = card.querySelector('.result-title').textContent.toLowerCase();
+                    const dates = card.querySelector('.result-dates').textContent.toLowerCase();
+                    
+                    if (title.includes(searchTerm) || dates.includes(searchTerm)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
         }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initApp);
     </script>
-
 </body>
 </html>
