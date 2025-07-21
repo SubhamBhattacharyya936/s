@@ -454,6 +454,43 @@
                 font-size: 0.85rem;
             }
         }
+                /* Scroll to Top Button Styles */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: #1a3e72;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 99;
+        }
+        
+        .scroll-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .scroll-to-top:hover {
+            background-color: #2a5298;
+            transform: translateY(-3px);
+        }
+        
+        /* Adjust footer position if needed */
+        footer {
+            /* Your existing footer styles */
+            z-index: 98; /* Ensure footer stays below scroll button */
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -567,9 +604,13 @@
         </div>
     </main>
 
+    <div class="scroll-to-top" id="scrollToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
     <!---footer>
-        <p>&copy; 2025 Government Job Updates. All rights reserved.</p>
-</footer--->
+        <p>&copy; 2023 Government Job Updates. All rights reserved.</p>
+    </footer--->
 
     <script>
         // Image Slider Functionality
@@ -1131,6 +1172,36 @@
 
         // Initialize the app when DOM is loaded
         document.addEventListener('DOMContentLoaded', initApp);
+
+                // Scroll to Top Functionality
+        function initScrollToTop() {
+            const scrollToTopBtn = document.getElementById('scrollToTop');
+            
+            // Show/hide button based on scroll position
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    scrollToTopBtn.classList.add('visible');
+                } else {
+                    scrollToTopBtn.classList.remove('visible');
+                }
+            });
+            
+            // Scroll to top when clicked
+            scrollToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initApp(); // Your existing app initialization
+            initImageSlider(); // Initialize the image slider
+            initScrollToTop(); // Initialize scroll to top button
+        });
+        
     </script>
 </body>
 </html>
