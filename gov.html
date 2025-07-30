@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Government Job Updates</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header Styles with Slider */
+        header {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+        }
+        
+        .slider-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        
+        .slider-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        
+        .slider-image.active {
+            opacity: 1;
+        }
+        
+        .banner-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            z-index: 2;
+        }
+        
+        .banner-text h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .banner-text p {
+            font-size: 1.2rem;
+        }
+        
+        /* Navigation Styles */
+        .navbar {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-tabs li {
+            margin-left: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-tabs li:hover, .nav-tabs li.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Main Content Styles */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            min-height: calc(100vh - 650px); /* Adjust based on footer height */
+        }
+        
+        .search-container {
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .search-input {
+            width: 100%;
+            max-width: 600px;
+            padding: 0.8rem 1.2rem;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            font-size: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #2a5298;
+            box-shadow: 0 2px 12px rgba(42, 82, 152, 0.2);
+        }
+        
+        /* Tab Content Styles */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Category Grid Styles */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .category-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .category-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        
+        .category-info {
+            padding: 1.2rem;
+        }
+        
+        .category-info h3 {
+            margin-bottom: 0.5rem;
+            color: #1e3c72;
+        }
+        
+        .category-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Job Post Card Styles */
+        .job-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .job-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .job-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .job-card h3 {
+            color: #1e3c72;
+            margin-bottom: 0.5rem;
+        }
+        
+        .job-category {
+            display: inline-block;
+            background-color: #e6f0ff;
+            color: #1e3c72;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+        }
+        
+        .job-description {
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .job-dates {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            color: #888;
+        }
+        
+        .view-more {
+            display: inline-block;
+            background-color: #1e3c72;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
+        }
+        
+        .view-more:hover {
+            background-color: #2a5298;
+        }
+        
+        /* Job Details Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 2rem auto;
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 800px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #888;
+        }
+        
+        .job-detail-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .job-detail-title {
+            color: #1e3c72;
+            margin-bottom: 1rem;
+        }
+        
+        .job-detail-description {
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+        
+        .important-dates {
+            background-color: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .important-dates h3 {
+            margin-bottom: 1rem;
+            color: #1e3c72;
+        }
+        
+        .date-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .date-item:last-child {
+            border-bottom: none;
+        }
+        
+        .apply-button {
+            display: inline-block;
+            background-color: #28a745;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .apply-button:hover {
+            background-color: #218838;
+        }
+        
+        /* Important Dates Table */
+        .dates-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            background-color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .dates-table th, .dates-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .dates-table th {
+            background-color: #1e3c72;
+            color: white;
+        }
+        
+        .dates-table tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        /* Result Card Styles */
+        .result-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .result-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-right: 1.5rem;
+        }
+        
+        .result-info {
+            flex: 1;
+        }
+        
+        .result-info h3 {
+            color: #1e3c72;
+            margin-bottom: 0.5rem;
+        }
+        
+        .result-dates {
+            display: flex;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            color: #888;
+        }
+        
+        .result-dates span {
+            margin-right: 1rem;
+        }
+        
+        .view-result {
+            display: inline-block;
+            background-color: #1e3c72;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
+        }
+        
+        .view-result:hover {
+            background-color: #2a5298;
+        }
+        
+        /* Footer Styles */
+        footer {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 3rem 1rem;
+            margin-top: 3rem;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-about h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-about p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+        
+        .footer-links h3, .footer-contact h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #a3c1ff;
+        }
+        
+        .footer-contact p {
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-contact i {
+            margin-right: 0.8rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .social-links {
+            display: flex;
+            margin-top: 1rem;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            margin-right: 1rem;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .social-links a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .banner-text h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-container {
+                flex-direction: column;
+            }
+            
+            .nav-tabs {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .nav-tabs li {
+                margin: 0.5rem;
+            }
+            
+            .category-grid, .job-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .result-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .result-image {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+            
+            .result-dates {
+                justify-content: center;
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Header with Banner slider Image -->
+    <header>
+        <div class="slider-container">
+            <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Government Jobs" class="slider-image active">
+            <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="SSC Jobs" class="slider-image">
+            <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="APSC Jobs" class="slider-image">
+            <img src="https://images.unsplash.com/photo-1540962351504-03099e0a754b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Defense Jobs" class="slider-image">
+        </div>
+
+        <div class="banner-text">
+            <h1>Government Job Updates</h1>
+            <p>Latest notifications for SSC, UPSC, State PSCs and other government jobs</p>
+        </div>
+    </header>
+    
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">GovJobUpdates</div>
+            <ul class="nav-tabs">
+                <li class="active" data-tab="categories">Job Categories</li>
+                <li data-tab="jobs">All Job Posts</li>
+                <li data-tab="dates">Important Dates</li>
+                <li data-tab="results">Job Results</li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Categories Tab -->
+        <div id="categories" class="tab-content active">
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search job categories..." id="categorySearch">
+            </div>
+            
+            <div class="category-grid" id="categoryGrid">
+                <!-- Categories will be populated by JavaScript -->
+            </div>
+        </div>
+        
+        <!-- All Jobs Tab -->
+        <div id="jobs" class="tab-content">
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search job posts..." id="jobSearch">
+            </div>
+            
+            <div class="job-list" id="jobList">
+                <!-- Job posts will be populated by JavaScript -->
+            </div>
+        </div>
+        
+        <!-- Important Dates Tab -->
+        <div id="dates" class="tab-content">
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search by job title..." id="dateSearch">
+            </div>
+            
+            <table class="dates-table">
+                <thead>
+                    <tr>
+                        <th>Job Title</th>
+                        <th>Notification Date</th>
+                        <th>Last Date to Apply</th>
+                        <th>Admit Card Date</th>
+                        <th>Exam Date</th>
+                    </tr>
+                </thead>
+                <tbody id="datesTableBody">
+                    <!-- Dates will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Results Tab -->
+        <div id="results" class="tab-content">
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search job results..." id="resultSearch">
+            </div>
+            
+            <div class="result-list" id="resultList">
+                <!-- Results will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Job Details Modal -->
+    <div class="modal" id="jobModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <img src="" alt="Job Image" class="job-detail-image" id="modalJobImage">
+            <h2 class="job-detail-title" id="modalJobTitle"></h2>
+            <div class="job-category" id="modalJobCategory"></div>
+            <div class="job-detail-description" id="modalJobDescription"></div>
+            
+            <div class="important-dates">
+                <h3>Important Dates</h3>
+                <div class="date-item">
+                    <span>Notification Date:</span>
+                    <span id="modalNotifyDate"></span>
+                </div>
+                <div class="date-item">
+                    <span>Start Date to Apply:</span>
+                    <span id="modalStartDate"></span>
+                </div>
+                <div class="date-item">
+                    <span>Last Date to Apply:</span>
+                    <span id="modalLastDate"></span>
+                </div>
+                <div class="date-item">
+                    <span>Admit Card Date:</span>
+                    <span id="modalAdmitDate"></span>
+                </div>
+                <div class="date-item">
+                    <span>Exam Date:</span>
+                    <span id="modalExamDate"></span>
+                </div>
+            </div>
+            
+            <a href="#" class="apply-button" id="modalApplyLink" target="_blank">Apply Now</a>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-about">
+                <h3>About GovJobUpdates</h3>
+                <p>GovJobUpdates is your one-stop destination for all government job notifications, exam dates, and results. We provide timely updates for SSC, UPSC, State PSCs, Banking, Railway, and other government sector jobs across India.</p>
+                <p>Our mission is to help job seekers find the right opportunities and prepare effectively for their dream government jobs.</p>
+            </div>
+            
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Latest Jobs</a></li>
+                    <li><a href="#">Admit Cards</a></li>
+                    <li><a href="#">Results</a></li>
+                    <li><a href="#">Syllabus</a></li>
+                    <li><a href="#">Previous Papers</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-contact">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Job Street, Career City, India</p>
+                <p><i class="fas fa-phone"></i> +91 9876543210</p>
+                <p><i class="fas fa-envelope"></i> info@govjobupdates.com</p>
+                
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2023 GovJobUpdates. All Rights Reserved.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Image Slider Functionality
+        function initImageSlider() {
+            const images = document.querySelectorAll('.slider-image');
+            let currentIndex = 0;
+            
+            // Show first image
+            images[currentIndex].classList.add('active');
+            
+            function showNextImage() {
+                // Hide current image
+                images[currentIndex].classList.remove('active');
+                
+                // Move to next image
+                currentIndex = (currentIndex + 1) % images.length;
+                
+                // Show next image
+                images[currentIndex].classList.add('active');
+            }
+            
+            // Change image every 3 seconds
+            setInterval(showNextImage, 3000);
+        }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initApp();
+            initImageSlider();
+        });
+
+        // Sample Data
+        const categories = [
+            {
+                id: 1,
+                title: "SSC Jobs",
+                description: "Staff Selection Commission - Various posts",
+                image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+            },
+            {
+                id: 2,
+                title: "UPSC Jobs",
+                description: "Union Public Service Commission - Civil Services",
+                image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+            },
+            {
+                id: 3,
+                title: "APSC Jobs",
+                description: "Assam Public Service Commission",
+                image: "https://images.unsplash.com/photo-1521791055366-0d553872125f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+            },
+            {
+                id: 4,
+                title: "Bank Jobs",
+                description: "Public Sector Banks - PO, Clerk, Specialist",
+                image: "https://images.unsplash.com/photo-1553729459-efe14ef6055d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+            },
+            {
+                id: 5,
+                title: "Railway Jobs",
+                description: "Indian Railways - Various technical and non-technical posts",
+                image: "https://images.unsplash.com/photo-1516054575922-f0b8eeadec1a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+            },
+            {
+                id: 6,
+                title: "Teaching Jobs",
+                description: "Professor, Assistant Professor, Teacher posts",
+                image: "https://images.unsplash.com/photo-1588072432836-e10032774350?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+            }
+        ];
+        
+        const jobs = [
+            {
+                id: 1,
+                title: "SSC CGL 2023 Notification",
+                category: "SSC Jobs",
+                description: "Combined Graduate Level Examination for various Group B and Group C posts in different Ministries/Departments/Organizations of Government of India.",
+                image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                notifyDate: "05/04/2023",
+                startDate: "10/04/2023",
+                lastDate: "05/05/2023",
+                admitDate: "15/06/2023",
+                examDate: "01/07/2023 - 15/07/2023",
+                applyLink: "https://ssc.nic.in"
+            },
+            {
+                id: 2,
+                title: "UPSC Civil Services 2023",
+                category: "UPSC Jobs",
+                description: "Indian Administrative Service, Indian Foreign Service, Indian Police Service and other Central Services (Group A and Group B).",
+                image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                notifyDate: "01/02/2023",
+                startDate: "05/02/2023",
+                lastDate: "05/03/2023",
+                admitDate: "10/05/2023",
+                examDate: "28/05/2023",
+                applyLink: "https://upsc.gov.in"
+            },
+            {
+                id: 3,
+                title: "APSC Combined Competitive Exam 2023",
+                category: "APSC Jobs",
+                description: "Assam Civil Service, Assam Police Service and other allied services under the Government of Assam.",
+                image: "https://images.unsplash.com/photo-1521791055366-0d553872125f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                notifyDate: "15/03/2023",
+                startDate: "20/03/2023",
+                lastDate: "20/04/2023",
+                admitDate: "01/06/2023",
+                examDate: "18/06/2023",
+                applyLink: "https://apsc.nic.in"
+            },
+            {
+                id: 4,
+                title: "SBI PO 2023 Recruitment",
+                category: "Bank Jobs",
+                description: "Probationary Officer posts in State Bank of India through SBI PO Exam 2023.",
+                image: "https://images.unsplash.com/photo-1553729459-efe14ef6055d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                notifyDate: "10/01/2023",
+                startDate: "15/01/2023",
+                lastDate: "10/02/2023",
+                admitDate: "01/03/2023",
+                examDate: "15/03/2023",
+                applyLink: "https://sbi.co.in"
+            },
+            {
+                id: 5,
+                title: "RRB NTPC 2023 Notification",
+                category: "Railway Jobs",
+                description: "Non-Technical Popular Categories (NTPC) posts in Indian Railways - Commercial Apprentice, Traffic Apprentice, etc.",
+                image: "https://images.unsplash.com/photo-1516054575922-f0b8eeadec1a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                notifyDate: "20/02/2023",
+                startDate: "25/02/2023",
+                lastDate: "25/03/2023",
+                admitDate: "10/05/2023",
+                examDate: "20/05/2023 - 30/05/2023",
+                applyLink: "https://indianrailways.gov.in"
+            },
+            {
+                id: 6,
+                title: "UGC NET June 2023",
+                category: "Teaching Jobs",
+                description: "National Eligibility Test for Assistant Professor and Junior Research Fellowship in Indian universities and colleges.",
+                image: "https://images.unsplash.com/photo-1588072432836-e10032774350?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                notifyDate: "05/03/2023",
+                startDate: "10/03/2023",
+                lastDate: "10/04/2023",
+                admitDate: "20/05/2023",
+                examDate: "10/06/2023 - 20/06/2023",
+                applyLink: "https://ugcnet.nta.nic.in"
+            }
+        ];
+        
+        const importantDates = jobs.map(job => ({
+            title: job.title,
+            notifyDate: job.notifyDate,
+            lastDate: job.lastDate,
+            admitDate: job.admitDate,
+            examDate: job.examDate
+        }));
+        
+        const results = [
+            {
+                id: 1,
+                title: "SSC CGL 2022 Final Result",
+                category: "SSC Jobs",
+                description: "Staff Selection Commission Combined Graduate Level Examination 2022 Final Result Declared",
+                image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                notifyDate: "15/01/2022",
+                examDate: "15/03/2022",
+                resultDate: "10/05/2023",
+                resultLink: "https://ssc.nic.in/result"
+            },
+            {
+                id: 2,
+                title: "UPSC Civil Services 2022 Final Result",
+                category: "UPSC Jobs",
+                description: "Union Public Service Commission Civil Services Examination 2022 Final Result Declared",
+                image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                notifyDate: "02/02/2022",
+                examDate: "05/06/2022",
+                resultDate: "15/05/2023",
+                resultLink: "https://upsc.gov.in/result"
+            },
+            {
+                id: 3,
+                title: "APSC CCE 2022 Final Result",
+                category: "APSC Jobs",
+                description: "Assam Public Service Commission Combined Competitive Examination 2022 Final Result",
+                image: "https://images.unsplash.com/photo-1521791055366-0d553872125f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                notifyDate: "10/03/2022",
+                examDate: "15/07/2022",
+                resultDate: "20/05/2023",
+                resultLink: "https://apsc.nic.in/result"
+            }
+        ];
+        
+        // DOM Elements
+        const navTabs = document.querySelectorAll('.nav-tabs li');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const categoryGrid = document.getElementById('categoryGrid');
+        const jobList = document.getElementById('jobList');
+        const datesTableBody = document.getElementById('datesTableBody');
+        const resultList = document.getElementById('resultList');
+        const jobModal = document.getElementById('jobModal');
+        const closeModal = document.querySelector('.close-modal');
+        
+        // Search Inputs
+        const categorySearch = document.getElementById('categorySearch');
+        const jobSearch = document.getElementById('jobSearch');
+        const dateSearch = document.getElementById('dateSearch');
+        const resultSearch = document.getElementById('resultSearch');
+        
+        // Modal Elements
+        const modalJobImage = document.getElementById('modalJobImage');
+        const modalJobTitle = document.getElementById('modalJobTitle');
+        const modalJobCategory = document.getElementById('modalJobCategory');
+        const modalJobDescription = document.getElementById('modalJobDescription');
+        const modalNotifyDate = document.getElementById('modalNotifyDate');
+        const modalStartDate = document.getElementById('modalStartDate');
+        const modalLastDate = document.getElementById('modalLastDate');
+        const modalAdmitDate = document.getElementById('modalAdmitDate');
+        const modalExamDate = document.getElementById('modalExamDate');
+        const modalApplyLink = document.getElementById('modalApplyLink');
+        
+        // Initialize the app
+        function initApp() {
+            renderCategories();
+            renderJobs();
+            renderImportantDates();
+            renderResults();
+            
+            // Set first tab as active by default
+            navTabs[0].classList.add('active');
+            tabContents[0].classList.add('active');
+        }
+                        
+        // Tab Navigation
+        navTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabId = this.getAttribute('data-tab');
+                
+                // Remove active class from all tabs and contents
+                navTabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding content
+                this.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // Render Categories
+        function renderCategories(filter = '') {
+            categoryGrid.innerHTML = '';
+            
+            const filteredCategories = categories.filter(category => 
+                category.title.toLowerCase().includes(filter.toLowerCase()) || 
+                category.description.toLowerCase().includes(filter.toLowerCase())
+            );
+            
+            if (filteredCategories.length === 0) {
+                categoryGrid.innerHTML = '<p>No categories found matching your search.</p>';
+                return;
+            }
+            
+            filteredCategories.forEach(category => {
+                const categoryCard = document.createElement('div');
+                categoryCard.className = 'category-card';
+                categoryCard.innerHTML = `
+                    <img src="${category.image}" alt="${category.title}" class="category-image">
+                    <div class="category-info">
+                        <h3>${category.title}</h3>
+                        <p>${category.description}</p>
+                    </div>
+                `;
+                
+                categoryCard.addEventListener('click', () => {
+                    // Filter jobs by this category and show jobs tab
+                    navTabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    document.querySelector(`.nav-tabs li[data-tab="jobs"]`).classList.add('active');
+                    document.getElementById('jobs').classList.add('active');
+                    
+                    // Filter jobs
+                    jobSearch.value = category.title;
+                    renderJobs(category.title);
+                });
+                
+                categoryGrid.appendChild(categoryCard);
+            });
+        }
+        
+        // Render Jobs
+        function renderJobs(filter = '') {
+            jobList.innerHTML = '';
+            
+            const filteredJobs = jobs.filter(job => 
+                job.title.toLowerCase().includes(filter.toLowerCase()) || 
+                job.category.toLowerCase().includes(filter.toLowerCase()) ||
+                job.description.toLowerCase().includes(filter.toLowerCase())
+            );
+            
+            if (filteredJobs.length === 0) {
+                jobList.innerHTML = '<p>No jobs found matching your search.</p>';
+                return;
+            }
+            
+            filteredJobs.forEach(job => {
+                const jobCard = document.createElement('div');
+                jobCard.className = 'job-card';
+                jobCard.innerHTML = `
+                    <h3>${job.title}</h3>
+                    <div class="job-category">${job.category}</div>
+                    <p class="job-description">${job.description}</p>
+                    <div class="job-dates">
+                        <span>Start Date: ${job.startDate}</span>
+                        <span>Last Date: ${job.lastDate}</span>
+                    </div>
+                    <a href="#" class="view-more" data-job-id="${job.id}">View Details</a>
+                `;
+                
+                jobList.appendChild(jobCard);
+            });
+            
+            // Add event listeners to view more buttons
+            document.querySelectorAll('.view-more').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const jobId = parseInt(this.getAttribute('data-job-id'));
+                    showJobDetails(jobId);
+                });
+            });
+        }
+        
+        // Render Important Dates
+        function renderImportantDates(filter = '') {
+            datesTableBody.innerHTML = '';
+            
+            const filteredDates = importantDates.filter(date => 
+                date.title.toLowerCase().includes(filter.toLowerCase())
+            );
+            
+            if (filteredDates.length === 0) {
+                datesTableBody.innerHTML = '<tr><td colspan="5">No important dates found matching your search.</td></tr>';
+                return;
+            }
+            
+            filteredDates.forEach(date => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${date.title}</td>
+                    <td>${date.notifyDate}</td>
+                    <td>${date.lastDate}</td>
+                    <td>${date.admitDate}</td>
+                    <td>${date.examDate}</td>
+                `;
+                datesTableBody.appendChild(row);
+            });
+        }
+        
+        // Render Results
+        function renderResults(filter = '') {
+            resultList.innerHTML = '';
+            
+            const filteredResults = results.filter(result => 
+                result.title.toLowerCase().includes(filter.toLowerCase()) || 
+                result.category.toLowerCase().includes(filter.toLowerCase())
+            );
+            
+            if (filteredResults.length === 0) {
+                resultList.innerHTML = '<p>No results found matching your search.</p>';
+                return;
+            }
+            
+            filteredResults.forEach(result => {
+                const resultCard = document.createElement('div');
+                resultCard.className = 'result-card';
+                resultCard.innerHTML = `
+                    <img src="${result.image}" alt="${result.title}" class="result-image">
+                    <div class="result-info">
+                        <h3>${result.title}</h3>
+                        <div class="result-dates">
+                            <span>Notification: ${result.notifyDate}</span>
+                            <span>Exam: ${result.examDate}</span>
+                            <span>Result: ${result.resultDate}</span>
+                        </div>
+                        <p>${result.description}</p>
+                    </div>
+                    <a href="${result.resultLink}" class="view-result" target="_blank">View Result</a>
+                `;
+                resultList.appendChild(resultCard);
+            });
+        }
+        
+        // Show Job Details in Modal
+        function showJobDetails(jobId) {
+            const job = jobs.find(j => j.id === jobId);
+            if (!job) return;
+            
+            modalJobImage.src = job.image;
+            modalJobImage.alt = job.title;
+            modalJobTitle.textContent = job.title;
+            modalJobCategory.textContent = job.category;
+            modalJobDescription.textContent = job.description;
+            modalNotifyDate.textContent = job.notifyDate;
+            modalStartDate.textContent = job.startDate;
+            modalLastDate.textContent = job.lastDate;
+            modalAdmitDate.textContent = job.admitDate;
+            modalExamDate.textContent = job.examDate;
+            modalApplyLink.href = job.applyLink;
+            
+            jobModal.style.display = 'block';
+        }
+        
+        // Close Modal
+        closeModal.addEventListener('click', function() {
+            jobModal.style.display = 'none';
+        });
+        
+        window.addEventListener('click', function(e) {
+            if (e.target === jobModal) {
+                jobModal.style.display = 'none';
+            }
+        });
+        
+        // Search Functionality
+        categorySearch.addEventListener('input', function() {
+            renderCategories(this.value);
+        });
+        
+        jobSearch.addEventListener('input', function() {
+            renderJobs(this.value);
+        });
+        
+        dateSearch.addEventListener('input', function() {
+            renderImportantDates(this.value);
+        });
+        
+        resultSearch.addEventListener('input', function() {
+            renderResults(this.value);
+        });
+
+                // Disable right-click
+        document.addEventListener('contextmenu', function (e) {
+        e.preventDefault();
+        });
+
+        // Disable F12, Ctrl+Shift+I/J/C/U
+        document.addEventListener('keydown', function (e) {
+        // F12
+        if (e.keyCode === 123) {
+            e.preventDefault();
+        }
+
+        // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
+        if (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(e.key.toUpperCase())) {
+            e.preventDefault();
+        }
+
+        // Ctrl+U (view-source)
+            if (e.ctrlKey && e.key.toUpperCase() === 'U') {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html> 
